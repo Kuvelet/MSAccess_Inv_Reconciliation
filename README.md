@@ -1,1 +1,1 @@
-# MSAccess_Inventory_Management
+# MS Access Approach to Stock Management
