@@ -8,7 +8,7 @@
 
 -[Tools](#tools)
 
--[Data Cleaning & Preparation](#data-cleaning--preparation)
+-[Data Exploration & Preparation](#data-exploration--preparation)
 
 -[Analysis](#analysis)
 
@@ -39,6 +39,10 @@ Both SAGE and WMS data are updated daily through scheduled imports to the compan
 **2.** The SAGE data described here refers to financial and accounting information related to inventory, including sales orders, purchase orders, and qouantity on hand. It consists of `Item ID`, `Item Description`, `Description for Sales`, `Description for Purchases`, `Sales Price 1`, `Case Qty`, `Quantity on Sales Orders`, `Quantity on Purchase Orders`, `Quantity On Hand`, `Vendor ID` columns in it.
 
 ### Tools
+
+- **MS Access**: For data transformation and analysis.
+
+
 
 
 
