@@ -8,7 +8,7 @@
 
 -[Tools](#tools)
 
--[Data Exploration & Preparation](#data-exploration--preparation)
+-[Data Context & Preparation](#data-context--preparation)
 
 -[Analysis](#analysis)
 
@@ -42,5 +42,11 @@ Both SAGE and WMS data are updated daily through scheduled imports to the compan
 
 - **MS Access**: For data transformation and analysis.
 
-### Data Exploration & Preparation
+### Data Context & Preparation
+
+In the context of SAGE data, the most critical columns for efficient inventory and financial management are Item ID, Quantity on Purchase Orders, Quantity on Sales Orders, and Quantity On Hand. The Item ID serves as a unique identifier for each product, ensuring accurate tracking and differentiation across inventory and financial systems. The Quantity on Purchase Orders column reflects the number of units that have been ordered from suppliers but have not yet been received, providing crucial insight into incoming stock levels and aiding in supply chain planning. The Quantity on Sales Orders captures the quantity of products committed to customer orders but not yet fulfilled, offering visibility into outgoing inventory demands. This is essential for aligning production and procurement with sales requirements. Lastly, the Quantity On Hand indicates the current stock available in the warehouse, serving as a key metric for evaluating whether inventory levels are sufficient to meet ongoing sales commitments and operational needs. Monitoring these three quantities ensures accurate forecasting, reduces the risk of stock shortages or overstocking, and supports timely procurement and order fulfillment. Integrating this data into the MS Access system enhances real-time visibility, enabling the operations team to make informed decisions and maintain optimal inventory levels.
+
+WMS data is sourced directly from the physical inventory system, providing real-time insights into stock levels within the warehouse. Ideally, when generating a pivot table from WMS data, the figures—especially regarding available stock—should perfectly align with the inventory records in SAGE. However, discrepancies between the two systems often occur due to various operational factors. These can include timing differences in data updates, human errors in data entry, false scanning during stock movements, or stock adjustments that are not promptly recorded. False scanning, such as scanning the wrong product barcode or incorrect quantities, can significantly contribute to data mismatches. Additionally, accounting-related issues like delayed purchase order receipts or misallocated sales orders can further widen these discrepancies. Such variances necessitate regular reconciliation processes to identify and resolve inconsistencies. By consolidating data from both systems within the MS Access database, discrepancies can be detected early, investigated, and corrected, ensuring greater accuracy in inventory reporting and more reliable decision-making for procurement, sales, and operations teams.
+
+
 
