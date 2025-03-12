@@ -36,4 +36,12 @@ Both SAGE and WMS data are updated daily through scheduled imports to the compan
 
 **1.** WMS Data refers to information that monitors and tracks the physical stock levels within the warehouse, ensuring accurate inventory control. It consists of `Part Number`, `Barcode`, `Location`, `Quantity Available`, `Quantity Reserved For Picking`, `Total Quantity`, `Deleted Quantity`, `ID` columns in it.
 
+**2.** The SAGE data described here refers to financial and accounting information related to inventory, including sales orders, purchase orders, and qouantity on hand. It consists of `Item ID`, `Item Description`, `Description for Sales`, `Description for Purchases`, `Sales Price 1`, `Case Qty`, `Quantity on Sales Orders`, `Quantity on Purchase Orders`, `Quantity On Hand`, `Vendor ID` columns in it.
+
+### Tools
+
+
+
+
+
 
