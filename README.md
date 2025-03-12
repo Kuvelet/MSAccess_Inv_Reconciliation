@@ -42,10 +42,5 @@ Both SAGE and WMS data are updated daily through scheduled imports to the compan
 
 - **MS Access**: For data transformation and analysis.
 
-
-
-
-
-
-
+### Data Exploration & Preparation
 
