@@ -34,6 +34,6 @@ Overall, the implementation of this database system not only streamlines invento
 
 Both SAGE and WMS data are updated daily through scheduled imports to the company file servers. This process ensures that the most current and accurate information is consistently available across systems, supporting efficient operations and informed decision-making.
 
-**1.** WMS Data refers to information that monitors and tracks the physical stock levels within the warehouse, ensuring accurate inventory control. It consists of `Part Number`, `Barcode`, `Location`, `Quantity Available`, `Quantity Reserved For Picking`, `Total Quantity`, `ID`columns in it.
+**1.** WMS Data refers to information that monitors and tracks the physical stock levels within the warehouse, ensuring accurate inventory control. It consists of `Part Number`, `Barcode`, `Location`, `Quantity Available`, `Quantity Reserved For Picking`, `Total Quantity`, `Deleted Quantity`, `ID` columns in it.
 
 
