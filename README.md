@@ -216,7 +216,7 @@ The table below showcases a refined sample output derived from the above query, 
 
 In certain scenarios, some part numbers may be exclusive to one system. For instance, part numbers may appear solely in the WMS table due to recent stock arrivals that have not yet been updated in the SAGE system. Conversely, some part numbers might exist only in the SAGE table, particularly if they represent discontinued items or products no longer stocked but still associated with outstanding purchase or sales orders.
 
-To ensure data integrity and avoid missing any part numbers, I will first create a union query in MS Access called Sage&WMS_ItemIDs_Combined. This query will generate a combined and unique column named Part_ID, which will include all unique part numbers present in both the SAGE and WMS tables.
+To ensure data integrity and avoid missing any part numbers, I will first create a union query in MS Access called `Sage&WMS_ItemIDs_Combined`. This query will generate a combined and unique column named Part_ID, which will include all unique part numbers present in both the SAGE and WMS tables.
 
 These steps will ensure an accurate comparison and support consistent inventory analysis across both systems.
 
