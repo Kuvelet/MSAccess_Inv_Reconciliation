@@ -57,6 +57,8 @@ On the other hand, WMS data is structured distinctly from SAGE, requiring carefu
 
 WMS data is sourced directly from the physical inventory system, providing real-time insights into stock levels within the warehouse. Ideally, when generating a pivot table from WMS data, the figures—especially regarding available stock—should perfectly align with the inventory records in SAGE. However, discrepancies between the two systems often occur due to various operational factors. These can include timing differences in data updates, human errors in data entry, false scanning during stock movements, or stock adjustments that are not promptly recorded. False scanning, such as scanning the wrong product barcode or incorrect quantities, can significantly contribute to data mismatches. Additionally, accounting-related issues like delayed purchase order receipts or misallocated sales orders can further widen these discrepancies. Such variances necessitate regular reconciliation processes to identify and resolve inconsistencies. By consolidating data from both systems within the MS Access database, discrepancies can be detected early, investigated, and corrected, ensuring greater accuracy in inventory reporting and more reliable decision-making for procurement, sales, and operations teams.
 
+Below are two sample datasets that illustrate the data structure. While each dataset contains additional columns, only the ones relevant to our analysis are included here.
+
 <table>
   <tr>
     <td>
