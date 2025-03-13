@@ -90,7 +90,7 @@ Below are two sample datasets that illustrate the data structure. While each dat
   </tr>
 </table>
 
-
+> **Note:** These tables are representative samples and does not include all records from the actual dataset. Part numbers and pricing information have been modified for confidentiality.
 
 **1.** I want to establish a live link between the data and MS Access to eliminate the need for re-importing whenever analysis is required.
 
