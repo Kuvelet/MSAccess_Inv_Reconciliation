@@ -212,13 +212,13 @@ The table below showcases a refined sample output derived from the above query, 
 | ITEM004         | 600                   | 250                   | 850                | 20                   | 200                            | 100                       | 150                    | 150                    | 450                      |
 | ITEM005         | 400                   | 180                   | 580                | 15                   | 150                            | 90                        | 60                     | 100                    | 330                      |
 
-**2.** The WMS table has now been transformed for advanced analysis. Before proceeding to compare values across both systems, it is crucial to ensure that every unique part number is included in the query we are about to construct.
+**2.** The WMS table has been successfully transformed for advanced analysis. Before proceeding to compare values across both systems, it is essential to ensure that every unique part number is accounted for in the upcoming query.
 
-In certain scenarios, some part numbers may be exclusive to one system. For instance, part numbers may appear solely in the WMS table due to recent stock arrivals that have not yet been updated in the SAGE system. Conversely, some part numbers might exist only in the SAGE table, particularly if they represent discontinued items or products no longer stocked but still associated with outstanding purchase or sales orders.
+In certain instances, part numbers may exist exclusively in one system. For example, some part numbers may appear only in the WMS table due to recent stock arrivals that have yet to be reflected in the SAGE system. Conversely, certain part numbers might be present solely in the SAGE table, particularly if they represent discontinued items or products no longer in stock but still associated with outstanding purchase or sales orders.
 
-To ensure data integrity and avoid missing any part numbers, I will first create a union query in MS Access called `Sage&WMS_ItemIDs_Combined`. This query will generate a combined and unique column named Part_ID, which will include all unique part numbers present in both the SAGE and WMS tables.
+To ensure data integrity and avoid overlooking any part numbers, I will first create a union query in MS Access named `Sage&WMS_ItemIDs_Combined`. This query will consolidate and generate a unique column, Part_ID, capturing all distinct part numbers from both the SAGE and WMS tables.
 
-These steps will ensure an accurate comparison and support consistent inventory analysis across both systems.
+This approach will guarantee a comprehensive and accurate comparison, minimize discrepancies, and support consistent, reliable inventory analysis across both systems.
 
 ```sql
 SELECT CStr([ITEM ID]) AS PartID
