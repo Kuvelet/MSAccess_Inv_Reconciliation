@@ -119,58 +119,58 @@ See the SQL query below for the transformation explained above, written specific
 TRANSFORM 
     -- Summing the total quantity for each pivoted column, replacing zero with Null for clarity
     IIf(
-        Sum([TUF_Stock_WMS_w_Loc].[Total Quantity]) = 0, 
+        Sum([Stock_WMS_w_Loc].[Total Quantity]) = 0, 
         Null, 
-        Sum([TUF_Stock_WMS_w_Loc].[Total Quantity])
+        Sum([Stock_WMS_w_Loc].[Total Quantity])
     ) AS [SumOfTotal Quantity]
 
 -- Main SELECT clause for aggregating and calculating relevant inventory metrics
 SELECT 
     -- The unique identifier for each product, ensuring accurate grouping and reporting
-    TUF_Stock_WMS_w_Loc.[Suspensia Number],
+    Stock_WMS_w_Loc.[Suspensia Number],
 
     -- Summing the quantity available across all locations for each part number.
     -- Replaces zero with Null to distinguish between actual zero values and absence of data.
     IIf(
-        Sum([TUF_Stock_WMS_w_Loc].[Quantity Available]) = 0, 
+        Sum([Stock_WMS_w_Loc].[Quantity Available]) = 0, 
         Null, 
-        Sum([TUF_Stock_WMS_w_Loc].[Quantity Available])
+        Sum([Stock_WMS_w_Loc].[Quantity Available])
     ) AS Quantity_Available,
 
     -- Summing the quantity reserved for picking, helping to identify the committed stock.
     -- Zero is replaced with Null to highlight only meaningful reserved stock quantities.
     IIf(
-        Sum([TUF_Stock_WMS_w_Loc].[Quantity Reserved For Picking]) = 0, 
+        Sum([Stock_WMS_w_Loc].[Quantity Reserved For Picking]) = 0, 
         Null, 
-        Sum([TUF_Stock_WMS_w_Loc].[Quantity Reserved For Picking])
+        Sum([Stock_WMS_w_Loc].[Quantity Reserved For Picking])
     ) AS Quantity_Reserved,
 
     -- Aggregating the total quantity available across all warehouse locations for each part.
     -- Zero values are replaced with Null to avoid cluttering reports with insignificant data.
     IIf(
-        Sum([TUF_Stock_WMS_w_Loc].[Total Quantity]) = 0, 
+        Sum([Stock_WMS_w_Loc].[Total Quantity]) = 0, 
         Null, 
-        Sum([TUF_Stock_WMS_w_Loc].[Total Quantity])
+        Sum([Stock_WMS_w_Loc].[Total Quantity])
     ) AS Total_Quantity,
 
     -- Summing the deleted quantity, representing stock that is no longer available or has been written off.
     -- Zero is replaced with Null to focus on meaningful data in the final output.
     IIf(
-        Sum([TUF_Stock_WMS_w_Loc].[Deleted Quantity]) = 0, 
+        Sum([Stock_WMS_w_Loc].[Deleted Quantity]) = 0, 
         Null, 
-        Sum([TUF_Stock_WMS_w_Loc].[Deleted Quantity])
+        Sum([Stock_WMS_w_Loc].[Deleted Quantity])
     ) AS Deleted_Quantity,
 
     -- Calculating the Immediately Available ISC stock, excluding quantities from key warehouses (GAL, TRH, KTL).
-    -- This helps identify the stock specifically available for ISC fulfillment.
+    -- This helps identify the stock specifically available for immediate fulfillment.
     -- The `Nz` function ensures that Null values are treated as zero to avoid calculation errors.
     IIf(
-        Sum([TUF_Stock_WMS_w_Loc].[Quantity Available]) 
+        Sum([Stock_WMS_w_Loc].[Quantity Available]) 
         - Nz(Sum(IIf(Left([Location], 3) = "GAL", [Total Quantity], 0)), 0)
         - Nz(Sum(IIf(Left([Location], 3) = "TRH", [Total Quantity], 0)), 0)
         - Nz(Sum(IIf(Left([Location], 3) = "KTL", [Total Quantity], 0)), 0) = 0,
         Null,
-        Sum([TUF_Stock_WMS_w_Loc].[Quantity Available]) 
+        Sum([Stock_WMS_w_Loc].[Quantity Available]) 
         - Nz(Sum(IIf(Left([Location], 3) = "GAL", [Total Quantity], 0)), 0)
         - Nz(Sum(IIf(Left([Location], 3) = "TRH", [Total Quantity], 0)), 0)
         - Nz(Sum(IIf(Left([Location], 3) = "KTL", [Total Quantity], 0)), 0)
@@ -178,11 +178,11 @@ SELECT
 
 -- Specifying the table from which data is being pulled
 FROM 
-    TUF_Stock_WMS_w_Loc
+    Stock_WMS_w_Loc
 
--- Grouping the results by Suspensia Number to ensure aggregated data is calculated for each unique product.
+-- Grouping the results by Part Number to ensure aggregated data is calculated for each unique product.
 GROUP BY 
-    TUF_Stock_WMS_w_Loc.[Suspensia Number]
+    Stock_WMS_w_Loc.[Part Number]
 
 -- Pivoting the data based on the warehouse location.
 -- The SWITCH function categorizes warehouse locations based on their code prefix.
@@ -198,7 +198,7 @@ PIVOT
         Left([Location], 3) = "KTL", "KTL Total Quantity",
 
         -- Any other location is categorized as 'ISC Total Quantity' (catch-all condition)
-        True, "ISC Total Quantity"
+        True, "Main Total Quantity"
     );
 ```
 
