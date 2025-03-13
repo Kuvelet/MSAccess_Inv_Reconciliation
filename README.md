@@ -39,10 +39,12 @@ Both SAGE and WMS data are updated daily through scheduled imports to the compan
 **2.** The SAGE data described here refers to financial and accounting information related to inventory, including sales orders, purchase orders, and qouantity on hand. It consists of `Item ID`, `Item Description`, `Description for Sales`, `Description for Purchases`, `Sales Price 1`, `Case Qty`, `Quantity on Sales Orders`, `Quantity on Purchase Orders`, `Quantity On Hand`, `Vendor ID` columns in it.
 
 ### Tools
+---
 
 - **MS Access**: For data transformation and analysis.
 
 ### Data Context & Preparation
+---
 
 In the context of SAGE data, the most critical columns for efficient inventory and financial management are Item ID, Quantity on Purchase Orders, Quantity on Sales Orders, and Quantity On Hand. The Item ID serves as a **unique identifier** for each product, ensuring accurate tracking and differentiation across inventory and financial systems. The Quantity on Purchase Orders column reflects the number of units that have been ordered from suppliers but have not yet been received, providing crucial insight into incoming stock levels and aiding in supply chain planning. The Quantity on Sales Orders captures the quantity of products committed to customer orders but not yet fulfilled, offering visibility into outgoing inventory demands. This is essential for aligning production and procurement with sales requirements. Lastly, the Quantity On Hand indicates the current stock available in the warehouse, serving as a key metric for evaluating whether inventory levels are sufficient to meet ongoing sales commitments and operational needs. Monitoring these three quantities ensures accurate forecasting, reduces the risk of stock shortages or overstocking, and supports timely procurement and order fulfillment. Integrating this data into the MS Access system enhances real-time visibility, enabling the operations team to make informed decisions and maintain optimal inventory levels.
 
@@ -63,7 +65,7 @@ Below are two sample datasets that illustrate the data structure. While each dat
   <tr>
     <td>
 
-### **SAGE Table (Financial Inventory Data)**
+#### **SAGE Table (Financial Inventory Data)**
 
 | **Item ID** | **Qty on<br>Purchase Orders** | **Qty on<br>Sales Orders** | **Qty<br>On Hand** |
 |-------------|------------------------------|----------------------------|---------------------|
@@ -76,7 +78,7 @@ Below are two sample datasets that illustrate the data structure. While each dat
 </td>
     <td>
 
-### **WMS Table (Warehouse Management Data)**
+#### **WMS Table (Warehouse Management Data)**
 
 | **Part<br>Number** | **Location** | **Qty<br>Available** | **Qty<br>Reserved** |
 |--------------------|-------------|----------------------|----------------------|
@@ -97,5 +99,15 @@ Below are two sample datasets that illustrate the data structure. While each dat
 To link a CSV file in MS Access, go to the External Data tab, select Text File, browse to your CSV, and choose "Link to the data source by creating a linked table". Follow the Link Text Wizard to specify delimiters, field names, and primary keys, then finish to create the linked table.
 
 Link both WMS and Sage Data using the same method.
+
+### Analysis
+
+**1.** 
+
+
+
+
+
+**1.** In some cases, there are unique part numbers that are recorded in only one table. For example, certain part numbers may exist exclusively in the WMS table due to recent stock arrivals that haven't yet been updated in the SAGE system. Conversely, some part numbers might appear only in the SAGE table if they are discontinued or no longer stocked but still have outstanding purchase or sales orders. These discrepancies highlight the importance of aligning data between systems for accurate inventory analysis.
 
 
