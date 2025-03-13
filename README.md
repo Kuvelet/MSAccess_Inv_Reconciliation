@@ -227,8 +227,4 @@ UNION SELECT CStr([Part Number]) AS PartID
 FROM Stock_WMS_w_Loc_Crosstab;
 ```
 
-
-
-**1.** In some cases, there are unique part numbers that are recorded in only one table. For example, certain part numbers may exist exclusively in the WMS table due to recent stock arrivals that haven't yet been updated in the SAGE system. Conversely, some part numbers might appear only in the SAGE table if they are discontinued or no longer stocked but still have outstanding purchase or sales orders. These discrepancies highlight the importance of aligning data between systems for accurate inventory analysis.
-
-
+**3.** 
