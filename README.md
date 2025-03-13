@@ -57,4 +57,43 @@ On the other hand, WMS data is structured distinctly from SAGE, requiring carefu
 
 WMS data is sourced directly from the physical inventory system, providing real-time insights into stock levels within the warehouse. Ideally, when generating a pivot table from WMS data, the figures—especially regarding available stock—should perfectly align with the inventory records in SAGE. However, discrepancies between the two systems often occur due to various operational factors. These can include timing differences in data updates, human errors in data entry, false scanning during stock movements, or stock adjustments that are not promptly recorded. False scanning, such as scanning the wrong product barcode or incorrect quantities, can significantly contribute to data mismatches. Additionally, accounting-related issues like delayed purchase order receipts or misallocated sales orders can further widen these discrepancies. Such variances necessitate regular reconciliation processes to identify and resolve inconsistencies. By consolidating data from both systems within the MS Access database, discrepancies can be detected early, investigated, and corrected, ensuring greater accuracy in inventory reporting and more reliable decision-making for procurement, sales, and operations teams.
 
+<table>
+  <tr>
+    <td>
+
+### **SAGE Table (Financial Inventory Data)**
+
+| **Item ID** | **Qty on<br>Purchase Orders** | **Qty on<br>Sales Orders** | **Qty<br>On Hand** |
+|-------------|------------------------------|----------------------------|---------------------|
+| ITEM001     | 100                          | 50                         | 200                 |
+| ITEM002     | 250                          | 150                        | 300                 |
+| ITEM003     | 0                            | 20                         | 80                  |
+| ITEM004     | 50                           | 70                         | 100                 |
+| ITEM005     | 150                          | 100                        | 400                 |
+
+</td>
+    <td>
+
+### **WMS Table (Warehouse Management Data)**
+
+| **Part<br>Number** | **Location** | **Qty<br>Available** | **Qty<br>Reserved** |
+|--------------------|-------------|----------------------|----------------------|
+| ITEM001            | GAL011      | 120                  | 30                   |
+| ITEM001            | 854A02      | 80                   | 20                   |
+| ITEM002            | KTL055      | 200                  | 50                   |
+| ITEM003            | TRH034      | 60                   | 15                   |
+| ITEM005            | 845B04      | 400                  | 80                   |
+
+</td>
+  </tr>
+</table>
+
+
+
+**1.** I want to establish a live link between the data and MS Access to eliminate the need for re-importing whenever analysis is required.
+
+To link a CSV file in MS Access, go to the External Data tab, select Text File, browse to your CSV, and choose "Link to the data source by creating a linked table". Follow the Link Text Wizard to specify delimiters, field names, and primary keys, then finish to create the linked table.
+
+Link both WMS and Sage Data using the same method.
+
 
