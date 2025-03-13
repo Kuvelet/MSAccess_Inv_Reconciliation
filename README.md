@@ -108,20 +108,101 @@ In our specific case, while the detailed location codes are not particularly rel
 
 To achieve this, the WMS data needs to be pivoted in a way that automatically recognizes the warehouse associated with each part number by identifying warehouse locations based on their prefixes—Galant locations start with "GAL", KTL with "KTL", TRH with "TRH", while Main warehouse locations do not follow a specific prefix pattern and are represented by the remaining location codes. The transformation should result in generating new columns for each warehouse, where the available and reserved quantities are appropriately categorized. This approach will ensure that each part number appears as a unique entry in the dataset, with corresponding values reflecting its distribution across the different warehouses (e.g., **Galant**, **KTL**, **TRH**, and **Main**).
 
-Additionally, the pivoted structure will simplify analysis by making it easier to:
-
-- Quickly identify in which warehouses a specific part number is stocked.
-- Aggregate quantities across warehouses for an overall inventory view.
-- Highlight discrepancies, such as parts present in one warehouse but missing in another.
+The pivoted structure will enhance analytical efficiency by facilitating the swift identification of which warehouses stock specific part numbers, enabling the aggregation of quantities across warehouses for a comprehensive inventory overview.
 
 By automating this pivot process, the transformed dataset will provide a clearer and more efficient view of inventory distribution. This structure not only enhances data clarity but also supports more informed operational and strategic decisions regarding inventory management, stock allocation, and order fulfillment.
 
+See the SQL query below for the transformation explained above, written specifically for MS Access.
+
+```sql
+-- Pivoting the data to categorize quantities by warehouse location
+TRANSFORM 
+    -- Summing the total quantity for each pivoted column, replacing zero with Null for clarity
+    IIf(
+        Sum([TUF_Stock_WMS_w_Loc].[Total Quantity]) = 0, 
+        Null, 
+        Sum([TUF_Stock_WMS_w_Loc].[Total Quantity])
+    ) AS [SumOfTotal Quantity]
+
+-- Main SELECT clause for aggregating and calculating relevant inventory metrics
+SELECT 
+    -- The unique identifier for each product, ensuring accurate grouping and reporting
+    TUF_Stock_WMS_w_Loc.[Suspensia Number],
+
+    -- Summing the quantity available across all locations for each part number.
+    -- Replaces zero with Null to distinguish between actual zero values and absence of data.
+    IIf(
+        Sum([TUF_Stock_WMS_w_Loc].[Quantity Available]) = 0, 
+        Null, 
+        Sum([TUF_Stock_WMS_w_Loc].[Quantity Available])
+    ) AS Quantity_Available,
+
+    -- Summing the quantity reserved for picking, helping to identify the committed stock.
+    -- Zero is replaced with Null to highlight only meaningful reserved stock quantities.
+    IIf(
+        Sum([TUF_Stock_WMS_w_Loc].[Quantity Reserved For Picking]) = 0, 
+        Null, 
+        Sum([TUF_Stock_WMS_w_Loc].[Quantity Reserved For Picking])
+    ) AS Quantity_Reserved,
+
+    -- Aggregating the total quantity available across all warehouse locations for each part.
+    -- Zero values are replaced with Null to avoid cluttering reports with insignificant data.
+    IIf(
+        Sum([TUF_Stock_WMS_w_Loc].[Total Quantity]) = 0, 
+        Null, 
+        Sum([TUF_Stock_WMS_w_Loc].[Total Quantity])
+    ) AS Total_Quantity,
+
+    -- Summing the deleted quantity, representing stock that is no longer available or has been written off.
+    -- Zero is replaced with Null to focus on meaningful data in the final output.
+    IIf(
+        Sum([TUF_Stock_WMS_w_Loc].[Deleted Quantity]) = 0, 
+        Null, 
+        Sum([TUF_Stock_WMS_w_Loc].[Deleted Quantity])
+    ) AS Deleted_Quantity,
+
+    -- Calculating the Immediately Available ISC stock, excluding quantities from key warehouses (GAL, TRH, KTL).
+    -- This helps identify the stock specifically available for ISC fulfillment.
+    -- The `Nz` function ensures that Null values are treated as zero to avoid calculation errors.
+    IIf(
+        Sum([TUF_Stock_WMS_w_Loc].[Quantity Available]) 
+        - Nz(Sum(IIf(Left([Location], 3) = "GAL", [Total Quantity], 0)), 0)
+        - Nz(Sum(IIf(Left([Location], 3) = "TRH", [Total Quantity], 0)), 0)
+        - Nz(Sum(IIf(Left([Location], 3) = "KTL", [Total Quantity], 0)), 0) = 0,
+        Null,
+        Sum([TUF_Stock_WMS_w_Loc].[Quantity Available]) 
+        - Nz(Sum(IIf(Left([Location], 3) = "GAL", [Total Quantity], 0)), 0)
+        - Nz(Sum(IIf(Left([Location], 3) = "TRH", [Total Quantity], 0)), 0)
+        - Nz(Sum(IIf(Left([Location], 3) = "KTL", [Total Quantity], 0)), 0)
+    ) AS [Immediately Available ISC]
+
+-- Specifying the table from which data is being pulled
+FROM 
+    TUF_Stock_WMS_w_Loc
+
+-- Grouping the results by Suspensia Number to ensure aggregated data is calculated for each unique product.
+GROUP BY 
+    TUF_Stock_WMS_w_Loc.[Suspensia Number]
+
+-- Pivoting the data based on the warehouse location.
+-- The SWITCH function categorizes warehouse locations based on their code prefix.
+PIVOT 
+    Switch(
+        -- If location starts with 'GAL', categorize it as 'Galaxy Total Quantity'
+        Left([Location], 3) = "GAL", "Galaxy Total Quantity",
+
+        -- If location starts with 'TRH', categorize it as 'TRH Total Quantity'
+        Left([Location], 3) = "TRH", "TRH Total Quantity",
+
+        -- If location starts with 'KTL', categorize it as 'KTL Total Quantity'
+        Left([Location], 3) = "KTL", "KTL Total Quantity",
+
+        -- Any other location is categorized as 'ISC Total Quantity' (catch-all condition)
+        True, "ISC Total Quantity"
+    );
+```
 
 
-
-
-
-To achieve this, the WMS data needs to be pivoted in a way that automatically recognizes the warehouse associated with each part number by identifying warehouse locations based on their prefixes—Galant locations start with "GAL", KTL with "KTL", TRH with "TRH", while Main warehouse locations do not follow a specific prefix pattern and are represented by the remaining location codes.
 
 
 
