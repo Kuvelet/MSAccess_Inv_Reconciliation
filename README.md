@@ -212,6 +212,21 @@ The table below showcases a refined sample output derived from the above query, 
 | ITEM004         | 600                   | 250                   | 850                | 20                   | 200                            | 100                       | 150                    | 150                    | 450                      |
 | ITEM005         | 400                   | 180                   | 580                | 15                   | 150                            | 90                        | 60                     | 100                    | 330                      |
 
+**2.** The WMS table has now been transformed for advanced analysis. Before proceeding to compare values across both systems, it is crucial to ensure that every unique part number is included in the query we are about to construct.
+
+In certain scenarios, some part numbers may be exclusive to one system. For instance, part numbers may appear solely in the WMS table due to recent stock arrivals that have not yet been updated in the SAGE system. Conversely, some part numbers might exist only in the SAGE table, particularly if they represent discontinued items or products no longer stocked but still associated with outstanding purchase or sales orders.
+
+To ensure data integrity and avoid missing any part numbers, I will first create a union query in MS Access called Sage&WMS_ItemIDs_Combined. This query will generate a combined and unique column named Part_ID, which will include all unique part numbers present in both the SAGE and WMS tables.
+
+These steps will ensure an accurate comparison and support consistent inventory analysis across both systems.
+
+```sql
+SELECT CStr([ITEM ID]) AS PartID
+FROM Stock_SAGE
+UNION SELECT CStr([Part Number]) AS PartID
+FROM Stock_WMS_w_Loc_Crosstab;
+```
+
 
 
 **1.** In some cases, there are unique part numbers that are recorded in only one table. For example, certain part numbers may exist exclusively in the WMS table due to recent stock arrivals that haven't yet been updated in the SAGE system. Conversely, some part numbers might appear only in the SAGE table if they are discontinued or no longer stocked but still have outstanding purchase or sales orders. These discrepancies highlight the importance of aligning data between systems for accurate inventory analysis.
