@@ -202,6 +202,15 @@ PIVOT
     );
 ```
 
+The table below showcases a refined sample output derived from the above query, illustrating how the transformed data will be structured within MS Access. This output provides a clear and concise overview of inventory distribution across warehouses, offering valuable insights for strategic decision-making.
+
+| **Part Number** | **Quantity Available** | **Quantity Reserved** | **Total Quantity** | **Deleted Quantity** | **Immediately Available MAIN** | **Galant Total Quantity** | **TRH Total Quantity** | **KTL Total Quantity** | **MAIN Total Quantity** |
+|-----------------|-----------------------|-----------------------|--------------------|----------------------|--------------------------------|---------------------------|------------------------|------------------------|--------------------------|
+| ITEM001         | 500                   | 200                   | 700                | 10                   | 300                            | 200                       | 150                    | 100                    | 250                      |
+| ITEM002         | 300                   | 100                   | 400                | 5                    | 200                            | 100                       | 50                     | 50                     | 200                      |
+| ITEM003         | 150                   | 80                    | 230                | 0                    | 80                             | 70                        | 30                     | 50                     | 80                       |
+| ITEM004         | 600                   | 250                   | 850                | 20                   | 400                            | 100                       | 150                    | 150                    | 450                      |
+| ITEM005         | 400                   | 180                   | 580                | 15                   | 250                            | 90                        | 60                     | 100                    | 330                      |
 
 
 
