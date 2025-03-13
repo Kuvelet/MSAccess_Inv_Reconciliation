@@ -102,9 +102,26 @@ Link both WMS and Sage Data using the same method.
 
 ### Analysis
 
-**1.** 
+**1.** To begin with, it is essential to transform the **WMS** table into a more structured format that can provide meaningful insights for analysis. Given that each location can store multiple part numbers, and a single part number may be distributed across multiple locations within the same or different warehouses, it is important to consolidate this data effectively. 
+
+In our specific case, while the detailed location codes are not particularly relevant, understanding which part number is stored in which warehouse is crucial for accurate inventory tracking and decision-making. The primary objective is to identify and distinguish part numbers based on their corresponding warehouses, ensuring that each part number is uniquely represented in the final dataset.
+
+To achieve this, the WMS data needs to be pivoted in a way that automatically recognizes the warehouse associated with each part number by identifying warehouse locations based on their prefixes—Galant locations start with "GAL", KTL with "KTL", TRH with "TRH", while Main warehouse locations do not follow a specific prefix pattern and are represented by the remaining location codes. The transformation should result in generating new columns for each warehouse, where the available and reserved quantities are appropriately categorized. This approach will ensure that each part number appears as a unique entry in the dataset, with corresponding values reflecting its distribution across the different warehouses (e.g., **Galant**, **KTL**, **TRH**, and **Main**).
+
+Additionally, the pivoted structure will simplify analysis by making it easier to:
+
+- Quickly identify in which warehouses a specific part number is stocked.
+- Aggregate quantities across warehouses for an overall inventory view.
+- Highlight discrepancies, such as parts present in one warehouse but missing in another.
+
+By automating this pivot process, the transformed dataset will provide a clearer and more efficient view of inventory distribution. This structure not only enhances data clarity but also supports more informed operational and strategic decisions regarding inventory management, stock allocation, and order fulfillment.
 
 
+
+
+
+
+To achieve this, the WMS data needs to be pivoted in a way that automatically recognizes the warehouse associated with each part number by identifying warehouse locations based on their prefixes—Galant locations start with "GAL", KTL with "KTL", TRH with "TRH", while Main warehouse locations do not follow a specific prefix pattern and are represented by the remaining location codes.
 
 
 
