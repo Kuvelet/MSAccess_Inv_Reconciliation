@@ -345,12 +345,8 @@ ORDER BY
 | **TRH (TRH Total Quantity)**       | Reflects stock present in **TRH warehouses**, aiding in regional stock valuation and cost forecasting. |
 | **KTL (KTL Total Quantity)**       | Represents stock in **KTL warehouses**, supporting location-based inventory cost analysis. |
 | **Monthly_Trend (Trend)**          | Provides insights into historical **stock movement patterns**, helping forecast future demand and procurement needs. From a financial perspective, it aids in cash flow planning and identifying potential overstock or stockout scenarios. |
-| **WMS-SAGE_Diff**                  | Calculates the **difference** between WMS’s total quantity and SAGE’s on-hand stock using the formula:  
-  `WMS-SAGE_Diff = WMS Total Quantity - SAGE Quantity On Hand`.  
-  A positive difference indicates surplus in WMS, while a negative difference suggests stock shortages. This variance is critical for understanding stock discrepancies, which directly affect **inventory valuation** and **financial accuracy**. |
-| **WMS-SAGE_DIFF_USD**              | Assesses the **financial impact** of inventory discrepancies by multiplying the stock difference by the **Active Supplier Cost** using the formula:  
-  `WMS-SAGE_DIFF_USD = WMS-SAGE_Diff × ActiveSupplierCost`.  
-  This figure quantifies the **monetary value** of inventory differences, providing a clear picture of potential gains or losses. Significant variances here can indicate financial reporting risks, procurement inefficiencies, or operational gaps. |
+| **WMS-SAGE_Diff**                  | Calculates the **difference** between WMS’s total quantity and SAGE’s on-hand stock using the formula:<br> `<WMS-SAGE_Diff = WMS Total Quantity - SAGE Quantity On Hand>`. <br> A positive difference indicates surplus in WMS, while a negative difference suggests stock shortages. This variance is critical for understanding stock discrepancies, which directly affect **inventory valuation** and **financial accuracy**. |
+| **WMS-SAGE_DIFF_USD**              | Assesses the **financial impact** of inventory discrepancies by multiplying the stock difference by the **Active Supplier Cost** using the formula:<br> `<WMS-SAGE_DIFF_USD = WMS-SAGE_Diff × ActiveSupplierCost>`. <br> This figure quantifies the **monetary value** of inventory differences, providing a clear picture of potential gains or losses. Significant variances here can indicate financial reporting risks, procurement inefficiencies, or operational gaps. |
 | **ActiveSupplierCost**             | Represents the **unit cost of the product** based on current supplier pricing. This value is essential for **valuing inventory**, calculating **procurement budgets**, and assessing the **financial impact** of inventory variances. |
 
 ---
