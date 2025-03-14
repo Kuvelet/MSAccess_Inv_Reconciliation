@@ -227,4 +227,155 @@ UNION SELECT CStr([Part Number]) AS PartID
 FROM Stock_WMS_w_Loc_Crosstab;
 ```
 
-**3.** 
+**3.** This query represents the **final and most comprehensive step** in the **SAGE vs. WMS inventory reconciliation process**, offering a consolidated view of inventory metrics and their **financial implications**. It integrates data from multiple sources—including inventory records, warehouse stock levels, historical trends, and supplier cost data—to provide a detailed and actionable analysis. The primary objective of this query is not only to identify discrepancies between the two systems but also to **quantify the financial impact** of these discrepancies, supporting informed decision-making for procurement, inventory management, and financial reporting. Please see below query:
+
+```sql
+SELECT DISTINCT 
+    [SAGE&WMS_ItemIDs_Combined].SUSP, 
+
+    -- Quantity on Sales Orders from SAGE (null if zero)
+    IIf([SUS_Stock_SAGE].[Quantity on Sales Orders] = 0, Null, [SUS_Stock_SAGE].[Quantity on Sales Orders]) AS QSO,
+
+    -- Quantity on Purchase Orders from SAGE (null if zero)
+    IIf([SUS_Stock_SAGE].[Quantity on Purchase Orders] = 0, Null, [SUS_Stock_SAGE].[Quantity on Purchase Orders]) AS QPO,
+
+    -- Quantity On Hand from SAGE (null if zero)
+    IIf([SUS_Stock_SAGE].[Quantity On Hand] = 0, Null, [SUS_Stock_SAGE].[Quantity On Hand]) AS QOH,
+
+    -- Total Quantity from WMS Crosstab
+    SUS_Stock_WMS_w_Loc_Crosstab.Total_Quantity AS WMS,
+
+    -- Reserved Quantity from WMS Crosstab
+    SUS_Stock_WMS_w_Loc_Crosstab.Quantity_Reserved AS WMS_Reserv,
+
+    -- Available Quantity from WMS Crosstab
+    SUS_Stock_WMS_w_Loc_Crosstab.Quantity_Available AS WMS_QAV,
+
+    -- ISC Total Quantity from WMS Crosstab
+    SUS_Stock_WMS_w_Loc_Crosstab.[ISC Total Quantity] AS WMS_ISC,
+
+    -- Galaxy Total Quantity from WMS Crosstab
+    SUS_Stock_WMS_w_Loc_Crosstab.[Galaxy Total Quantity] AS GLX,
+
+    -- TRH Total Quantity from WMS Crosstab
+    SUS_Stock_WMS_w_Loc_Crosstab.[TRH Total Quantity] AS TRH,
+
+    -- KTL Total Quantity from WMS Crosstab
+    SUS_Stock_WMS_w_Loc_Crosstab.[KTL Total Quantity] AS KTL,
+
+    -- Monthly Trend from Trend table
+    dbo_Trend.Trend AS Monthly_Trend,
+
+    -- Difference between WMS and SAGE quantities
+    Val(Nz(-[Quantity On Hand], 0)) + Val(Nz([Total_Quantity], 0)) AS [WMS-SAGE_Diff],
+
+    -- Financial impact of the WMS-SAGE difference
+    Nz([ActiveSupplierCost], 0) * Val(Nz([WMS-SAGE_DIFF], 0)) AS [WMS-SAGE_DIFF_USD],
+
+    -- Active Supplier Cost from the merged cost table
+    [05_SUSPENSIA_MERGED_COST].ActiveSupplierCost
+
+FROM 
+    [SAGE&WMS_ItemIDs_Combined]
+    
+    -- Join with SAGE Stock Data
+    LEFT JOIN SUS_Stock_SAGE 
+        ON [SAGE&WMS_ItemIDs_Combined].SUSP = SUS_Stock_SAGE.[Item ID]
+
+    -- Join with WMS Crosstab Data
+    LEFT JOIN SUS_Stock_WMS_w_Loc_Crosstab 
+        ON [SAGE&WMS_ItemIDs_Combined].SUSP = SUS_Stock_WMS_w_Loc_Crosstab.[Suspensia Number]
+
+    -- Join with Trend Data
+    LEFT JOIN dbo_Trend 
+        ON [SAGE&WMS_ItemIDs_Combined].SUSP = dbo_Trend.SUS
+
+    -- Join with Merged Cost Data
+    LEFT JOIN 05_SUSPENSIA_MERGED_COST 
+        ON [SAGE&WMS_ItemIDs_Combined].SUSP = [05_SUSPENSIA_MERGED_COST].SusCatalog
+
+-- Filtering part numbers based on specific conditions
+WHERE 
+    [SAGE&WMS_ItemIDs_Combined].SUSP LIKE "x*" 
+    AND [SAGE&WMS_ItemIDs_Combined].SUSP NOT LIKE "*bx*" 
+    AND [SAGE&WMS_ItemIDs_Combined].SUSP NOT LIKE "*bg*"
+
+-- Sorting the final result by part number
+ORDER BY 
+    [SAGE&WMS_ItemIDs_Combined].SUSP;
+```
+
+
+#### **Query Functionality**
+
+1. **Comprehensive Data Integration**  
+   The query initiates by extracting all unique part numbers (**`SUSP`**) from the **`SAGE&WMS_ItemIDs_Combined`** union query. This ensures that every distinct part number from either system is included, eliminating the risk of missing any critical data during reconciliation.  
+
+2. **Inventory Comparison and Validation**  
+   The query then performs **LEFT JOINS** with key datasets, including:
+   - **SAGE Inventory Data** to extract quantities related to **sales orders (QSO)**, **purchase orders (QPO)**, and **on-hand stock (QOH)**.  
+   - **WMS Crosstab Data** to gather detailed information on warehouse stock, including **total quantity, reserved stock, and available stock** distributed across various warehouse categories (Galant, TRH, KTL, and MAIN).  
+   - **Trend Data** to provide historical insights into stock movement patterns.  
+   - **Cost Data** to calculate the financial implications of stock discrepancies.
+
+3. **Data Cleansing and Standardization**  
+   To enhance data clarity, quantities that are **zero** are replaced with **`NULL`**, ensuring that the final report is cleaner and more focused on meaningful values.
+
+4. **Discrepancy Identification**  
+   The query identifies discrepancies by comparing the **SAGE "Quantity On Hand"** against the **WMS "Total Quantity"**. Any mismatches are calculated and flagged, ensuring that no inconsistencies are overlooked.
+
+5. **Financial Impact Analysis**  
+   Beyond identifying inventory discrepancies, the query takes a critical step in calculating their **financial impact**, helping the business understand potential cost implications arising from stock variances.
+
+---
+
+#### **Detailed Column Breakdown & Financial Implications**
+
+| **Column Name**                  | **Description & Financial Implication** |
+|-----------------------------------|-----------------------------------------|
+| **SUSP**                          | Represents the unique **part number** from both systems, ensuring a unified view across SAGE and WMS. |
+| **QSO (Quantity on Sales Orders)** | Displays the total quantity of items currently committed to **sales orders** in SAGE. A discrepancy here may indicate potential **sales risks** if WMS stock cannot fulfill demand. |
+| **QPO (Quantity on Purchase Orders)** | Reflects quantities on **outstanding purchase orders** in SAGE. Financially, this indicates future liabilities, as these purchases will affect future stock and cash flow. |
+| **QOH (Quantity On Hand)**         | Represents the **current physical stock** recorded in SAGE. This value is crucial for **asset valuation** and understanding the real-time inventory position. |
+| **WMS (Total_Quantity)**           | The **total stock quantity** recorded in WMS, combining all locations and statuses. Any variance from SAGE’s QOH can indicate discrepancies in stock accounting, with direct financial implications. |
+| **WMS_Reserv (Quantity_Reserved)** | Highlights stock that is **reserved for orders** in WMS but not yet picked or shipped. If not properly reconciled with SAGE, it can lead to inaccurate financial forecasting. |
+| **WMS_QAV (Quantity_Available)**   | Reflects the **immediately available stock** for sales or operations in WMS. Lower-than-expected values can signal supply risks, potentially resulting in lost sales or expedited procurement costs. |
+| **WMS_ISC (ISC Total Quantity)**   | Captures the total stock allocated to **ISC/Main warehouses**, providing clarity on where stock is physically located, which is critical for logistics planning and cost allocation. |
+| **GLX (Galant Total Quantity)**    | Represents stock allocated to **Galant warehouses**, important for warehouse-specific cost accounting and logistics. |
+| **TRH (TRH Total Quantity)**       | Reflects stock present in **TRH warehouses**, aiding in regional stock valuation and cost forecasting. |
+| **KTL (KTL Total Quantity)**       | Represents stock in **KTL warehouses**, supporting location-based inventory cost analysis. |
+| **Monthly_Trend (Trend)**          | Provides insights into historical **stock movement patterns**, helping forecast future demand and procurement needs. From a financial perspective, it aids in cash flow planning and identifying potential overstock or stockout scenarios. |
+| **WMS-SAGE_Diff**                  | Calculates the **difference** between WMS’s total quantity and SAGE’s on-hand stock using the formula:  
+  \[
+  \text{WMS-SAGE\_Diff} = \text{WMS Total Quantity} - \text{SAGE Quantity On Hand}
+  \]  
+  A positive difference indicates surplus in WMS, while a negative difference suggests stock shortages. This variance is critical for understanding stock discrepancies, which directly affect **inventory valuation** and **financial accuracy**. |
+| **WMS-SAGE_DIFF_USD**              | Assesses the **financial impact** of inventory discrepancies by multiplying the stock difference by the **Active Supplier Cost** using the formula:  
+  \[
+  \text{WMS-SAGE\_DIFF\_USD} = \text{WMS-SAGE\_Diff} \times \text{ActiveSupplierCost}
+  \]  
+  This figure quantifies the **monetary value** of inventory differences, providing a clear picture of potential gains or losses. Significant variances here can indicate financial reporting risks, procurement inefficiencies, or operational gaps. |
+| **ActiveSupplierCost**             | Represents the **unit cost of the product** based on current supplier pricing. This value is essential for **valuing inventory**, calculating **procurement budgets**, and assessing the **financial impact** of inventory variances. |
+
+---
+
+#### **Key Financial Insights Derived from the Query**
+
+1. **Accurate Inventory Valuation**  
+   By reconciling WMS and SAGE data, the query ensures that inventory valuations reflect true stock positions. This is crucial for accurate **financial reporting** and **balance sheet accuracy**.
+
+2. **Cost Impact of Discrepancies**  
+   The **`WMS-SAGE_DIFF_USD`** column highlights the **potential financial losses or gains** arising from stock discrepancies. This helps management prioritize corrective actions for high-value discrepancies, reducing the risk of **financial misstatements**.
+
+3. **Informed Procurement and Financial Planning**  
+   Understanding trends and stock differences enables better **procurement planning**, **cost forecasting**, and **budget allocation**, ensuring optimal stock levels without over-investing in inventory.
+
+4. **Operational Risk Management**  
+   Discrepancies in reserved or available stock help identify **potential supply chain risks**, allowing proactive measures to avoid stockouts, lost sales, or expedited shipment costs.
+
+---
+
+#### **Conclusion**
+
+This query serves as a **comprehensive reconciliation and financial impact analysis tool**. It ensures accurate inventory tracking across SAGE and WMS, identifies stock discrepancies, and quantifies their financial implications. By integrating supplier cost data, it highlights the **monetary value of stock variances**, supporting more informed decision-making around procurement, inventory management, and financial reporting. The final output ensures that the business can **proactively address inventory risks, optimize costs**, and maintain accurate financial records.
+
