@@ -1,4 +1,4 @@
-# Streamlining Inventory Reconciliation Between Accounting Data and WMS
+# Inventory Reconciliation and Financial Impact Analysis
 
 ### Table of Contents
 
