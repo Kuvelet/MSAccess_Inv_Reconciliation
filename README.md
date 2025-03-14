@@ -1,4 +1,4 @@
-# MS Access Approach to Stock Management
+# Streamlining Inventory Reconciliation Between Accounting Data and WMS
 
 ### Table of Contents
 
