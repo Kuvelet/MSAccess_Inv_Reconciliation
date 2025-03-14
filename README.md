@@ -373,31 +373,31 @@ This query serves as a **comprehensive reconciliation and financial analysis too
 
 ### **Results & Findings**
 
-##### 1. **Inventory Discrepancies Identified**  
+#### 1. **Inventory Discrepancies Identified**  
 - A total of **150 unique part numbers** were analyzed across both **SAGE** and **WMS** systems.  
 - **35 part numbers** were identified with significant discrepancies between **SAGE's Quantity On Hand (QOH)** and **WMS's Total Quantity**.  
 - The **total quantity discrepancy** identified across these part numbers amounted to **4,500 units**, with some part numbers having surpluses in WMS and others indicating shortages.
 
-##### 2. **Financial Impact Analysis**  
+#### 2. **Financial Impact Analysis**  
 - The total financial impact of the inventory discrepancies (based on **Active Supplier Cost**) was calculated to be approximately **$325,000**.  
 - Out of this, **$210,000** represented potential overstock costs (excess quantities in WMS not reflected in SAGE).  
 - The remaining **$115,000** highlighted potential inventory shortages, indicating risks of **lost sales** or delayed fulfillment.  
 - The highest financial discrepancy for a single part number was valued at **$25,000**, emphasizing the need for immediate investigation.
 
-##### 3. **Warehouse Distribution Insights**  
+#### 3. **Warehouse Distribution Insights**  
 - **Main (ISC) Warehouses** accounted for **40%** of the total available stock, suggesting stable stock levels but also highlighting the necessity for regular reconciliation.  
 - **Galant warehouses** represented **30%** of the total inventory, with notable discrepancies identified in **10 part numbers**.  
 - **TRH and KTL warehouses** together accounted for the remaining **30%**, with minor discrepancies observed but within acceptable tolerance levels.
 
-##### 4. **Reserved vs. Available Stock**  
+#### 4. **Reserved vs. Available Stock**  
 - Of the total stock in WMS, **25%** was reserved for picking, leaving **75%** available for immediate sale or dispatch.  
 - However, **15%** of the reserved stock did not have corresponding entries in SAGE, potentially leading to **order fulfillment risks** if not reconciled promptly.
 
-##### 5. **Trend Analysis Findings**  
+#### 5. **Trend Analysis Findings**  
 - Historical trend data indicated that **20% of the part numbers** with high discrepancies also showed irregular stock movements over the last three months.  
 - This suggests potential issues in **procurement forecasting** or **warehouse management**, which require further analysis.
 
-##### 6. **Key Risks Identified**  
+#### 6. **Key Risks Identified**  
 - Discrepancies in reserved stock could lead to **stockouts** or **order delays** if not addressed.  
 - Overstocking in certain warehouses might result in **increased holding costs** and potential write-offs if demand does not meet expectations.  
 - Misaligned data between systems could impact **financial reporting accuracy**, leading to compliance risks.
